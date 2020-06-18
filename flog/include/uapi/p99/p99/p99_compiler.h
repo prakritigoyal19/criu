@@ -420,7 +420,7 @@ signed p00_trailing_comma_in_initializer__(void) {
 # define __STDC_NO_ATOMICS__ 1
 
 #elif P99_COMPILER & P99_COMPILER_CLANG
-# if p99_has_attribute(always_inline)
+# if p99_has_attribute(__always_inline)
 #  define p99_inline __attribute__((__always_inline__)) inline
 # endif
 /* clang can't nail a variable to a register, yet */

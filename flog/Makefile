@@ -3,6 +3,7 @@ export OPTS
 
 CFLAGS			+= -iquote include
 CFLAGS			+= -iquote flog/include
+CFLAGS  		+= -iquote flog/include/upai/p99/p99
 CFLAGS			+= -iquote flog/include/uapi
 
 include $(__nmk_dir)msg.mk

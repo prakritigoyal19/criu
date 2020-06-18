@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <errno.h>
+#include "p99/p99/p99_generic.h"
 
 /*
  * We work with up to 32 arguments in macros here.
@@ -75,56 +76,90 @@
 #define FLOG_GENMASK(op, ...)		FLOG_GENMASK_(FLOG_PP_NARG(__VA_ARGS__), op, ##__VA_ARGS__)
 
 #define flog_genbit(ord, n, v, ...)					\
-	_Generic((v),							\
-									\
-		 /* Basic types */					\
-		 char:				0,			\
-		 signed char:			0,			\
-		 unsigned char:			0,			\
-		 signed short int:		0,			\
-		 unsigned short int:		0,			\
-		 signed int:			0,			\
-		 unsigned int:			0,			\
-		 signed long:			0,			\
-		 unsigned long:			0,			\
-		 signed long long:		0,			\
-		 unsigned long long:		0,			\
-									\
-		 /* Not used for a while */				\
-		 /* float:			12, */			\
-		 /* double:			13, */			\
-		 /* long double:		14, */			\
-									\
-		 /* Basic poniters */					\
-		 char *:			(1u << (ord - n - 1)),	\
-		 signed char *:			(1u << (ord - n - 1)),	\
-		 unsigned char *:		(1u << (ord - n - 1)),	\
-		 signed short int *:		0,			\
-		 unsigned short int *:		0,			\
-		 signed int *:			0,			\
-		 unsigned int *:		0,			\
-		 signed long *:			0,			\
-		 unsigned long *:		0,			\
-		 signed long long *:		0,			\
-		 unsigned long long *:		0,			\
-		 void *:			0,			\
-									\
-		 /* Const basic pointers */				\
-		 const char *:			(1u << (ord - n - 1)),	\
-		 const signed char *:		(1u << (ord - n - 1)),	\
-		 const unsigned char *:		(1u << (ord - n - 1)),	\
-		 const signed short int *:	0,			\
-		 const unsigned short int *:	0,			\
-		 const signed int *:		0,			\
-		 const unsigned int *:		0,			\
-		 const signed long *:		0,			\
-		 const unsigned long *:		0,			\
-		 const signed long long *:	0,			\
-		 const unsigned long long *:	0,			\
-		 const void *:			0,			\
-									\
-		 /* Systypes and pointers */				\
-		 default:			-1)
+	P99_GENERIC(v, -1	,	(char ,	 (1u << (ord - n - 1))),\
+		(signed char,			0), \
+		(unsigned char,			0), \
+		(signed short int,		0),			\
+		 (unsigned short int,	0),			\
+		 (signed int,			0),			\
+		 (unsigned int,			0),			\
+		 (signed long,			0),			\
+		 (unsigned long,		0),			\
+		 (signed long long,		0),			\
+		 (unsigned long long,	0), 		\
+		 (signed char *,			(1u << (ord - n - 1))),	\
+		 (unsigned char *,			(1u << (ord - n - 1))),	\
+		 (signed short int *,					0),			\
+		 (unsigned short int *,					0),			\
+		 (signed int *,							0),			\
+		 (unsigned int *,						0),			\
+		 (signed long *,						0),			\
+		 (unsigned long *,						0),			\
+		 (signed long long *,					0),			\
+		 (unsigned long long *,					0),			\
+		 (void *,								0),			\
+		 (const signed char *,		(1u << (ord - n - 1))),	\
+		 (const unsigned char *,	(1u << (ord - n - 1))),	\
+		 (const signed short int *,		0),			\
+		 (const unsigned short int *,	0),			\
+		 (const signed int *,			0),			\
+		 (const unsigned int *,			0),			\
+		 (const signed long *,			0),			\
+		 (const unsigned long *,		0),			\
+		 (const signed long long *,		0),			\
+		 (const unsigned long long *,	0),			\
+		 (const void *,					0)			\
+		)
+		/* Systypes and pointers */			
+		/*-1*/					
+											
+		 /* Basic types */					
+		 /*			\
+		 (signed char,			0),			\
+		 (unsigned char,		0),			\
+		 (signed short int,		0),			\
+		 (unsigned short int,	0),			\
+		 (signed int,			0),			\
+		 (unsigned int,			0),			\
+		 (signed long,			0),			\
+		 (unsigned long,		0),			\
+		 (signed long long,		0),			\
+		 (unsigned long long,	0),			\*/ 
+											
+		 /* Not used for a while */			
+		 /* (float,			12), */			
+		 /* (double,			13), */			
+		 /* (long double,		14), */			
+												
+		 /* Basic poniters */					
+		/* (char *,					(1u << (ord - n - 1))),	\
+		 (signed char *,			(1u << (ord - n - 1))),	\
+		 (unsigned char *,			(1u << (ord - n - 1))),	\
+		 (signed short int *,					0),			\
+		 (unsigned short int *,					0),			\
+		 (signed int *,							0),			\
+		 (unsigned int *,						0),			\
+		 (signed long *,						0),			\
+		 (unsigned long *,						0),			\
+		 (signed long long *,					0),			\
+		 (unsigned long long *,					0),			\
+		 (void *,								0),			\ \
+															\
+		  Const basic pointers 							\
+		 	\
+		 (const signed char *,		(1u << (ord - n - 1))),	\
+		 (const unsigned char *,	(1u << (ord - n - 1))),	\
+		 (const signed short int *,		0),			\
+		 (const unsigned short int *,	0),			\
+		 (const signed int *,			0),			\
+		 (const unsigned int *,			0),			\
+		 (const signed long *,			0),			\
+		 (const unsigned long *,		0),			\
+		 (const signed long long *,		0),			\
+		 (const unsigned long long *,	0),			\
+		 (const void *,					0),			\
+													\*/
+		 
 
 typedef struct {
 	unsigned int	magic;

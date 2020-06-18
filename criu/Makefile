@@ -24,6 +24,7 @@ CONFIG-DEFINES		+= -DUSER_CONFIG_DIR='".criu/"'
 CFLAGS			+= -fno-strict-aliasing
 CFLAGS			+= -iquote criu/include
 CFLAGS			+= -iquote include
+CFLAGS  		+= -iquote flog/include/upai/p99/p99
 CFLAGS			+= -iquote images
 CFLAGS			+= -iquote $(ARCH_DIR)/include
 CFLAGS			+= -iquote .

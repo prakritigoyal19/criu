@@ -225,7 +225,8 @@ int log_init(const char *output)
 	} else if (output) {
 		/*Changed the value here as the output is going to be
 		stored in a log file.*/
-		log_in_file = 1;
+		if(opts.log_in_binary)
+			log_in_file = 1;
 
 		new_logfd = open(output, O_CREAT|O_TRUNC|O_WRONLY|O_APPEND, 0600);
 		if (new_logfd < 0) {

@@ -10,6 +10,7 @@
 #include "common/compiler.h"
 #include "fcntl.h"
 #include "log.h"
+#include "flog.h"
 #include "util-pie.h"
 
 #ifdef CR_NOGLIBC

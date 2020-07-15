@@ -2340,10 +2340,11 @@ int tty_prep_fds(void)
 	if (!opts.shell_job)
 		return 0;
 
-	if (!isatty(STDIN_FILENO))
+	if (!isatty(STDIN_FILENO)){
 		pr_info("Standard stream is not a terminal, may fail later\n");
-	else
+	}else{
 		stdin_isatty = true;
+	}
 
 	self_stdin_fdid = fdstore_add(STDIN_FILENO);
 	if (self_stdin_fdid < 0) {

@@ -10,7 +10,10 @@
 //#include <ffi.h>
 
 #include "uapi/flog.h"
-#include "util.h"
+#include "flog_util.h"
+#include "cr_options.h"
+#include "log.h"
+#include "servicefd.h"
 
 #define MAGIC 0xABCDABCD
 
@@ -25,14 +28,7 @@ static int flog_enqueue(int fdout, flog_msg_t *m, const char *format);
 /*int flog_decode_all(int fdin, int fdout)
 {
 	flog_msg_t *m = (void *)mbuf;
-	ffi_type *args[34] = {
-		[0]		= &ffi_type_sint,
-		[1]		= &ffi_type_pointer,
-		[2 ... 33]	= &ffi_type_slong
-	};
 	void *values[34];
-	ffi_cif cif;
-	ffi_arg rc;
 	size_t i, ret;
 	char *fmt;
 
@@ -69,10 +65,6 @@ static int flog_enqueue(int fdout, flog_msg_t *m, const char *format);
 				m->args[i] = (long)(mbuf + m->args[i]);
 			}
 		}
-
-		if (ffi_prep_cif(&cif, FFI_DEFAULT_ABI, m->nargs + 2,
-				 &ffi_type_sint, args) == FFI_OK)
-			ffi_call(&cif, FFI_FN(dprintf), &rc, values);
 	}
 	return 0;
 }*/
@@ -153,66 +145,86 @@ int flog_close(int fdout)
 	return 0;
 }
 
-int flog_encode_msg(int fdout, unsigned int nargs, unsigned int mask, const char *format, ...)
+int flog_encode_msg(int loglevel, unsigned int nargs, unsigned int mask, const char *format, ...)
 {
 	flog_msg_t *m;
 	va_list argptr;
 	char *str_start, *p;
 	size_t i;
+	int fdout;
+	unsigned int current_loglevel;
 
-	if (mbuf != _mbuf && flog_map_buf(fdout))
-		return -1;
+	if (!opts.log_in_binary){
 
-	m = (void *) mbuf;
+		va_start(argptr, format);
+		vprint_on_level(loglevel, format, argptr);
+		va_end(argptr);
 
-	m->nargs = nargs;
-	m->mask = mask;
-
-	str_start = (void *)m->args + sizeof(m->args[0]) * nargs;
-	p = memccpy(str_start, format, 0, mbuf_size - (str_start - mbuf));
-	if (p == NULL) {
-		fprintf(stderr, "No memory for string argument\n");
-		return -1;
-	}
-	m->fmt = str_start - mbuf;
-	str_start = p;
-
-	va_start(argptr, format);
-	for (i = 0; i < nargs; i++) {
-		m->args[i] = (long)va_arg(argptr, long);
-		/*
-		 * If we got a string, we should either
-		 * reference it when in rodata, or make
-		 * a copy (FIXME implement rodata refs).
-		 */
-		if (mask & (1u << i)) {
-			p = memccpy(str_start, (void *)m->args[i], 0, mbuf_size - (str_start - mbuf));
-			if (p == NULL) {
-				fprintf(stderr, "No memory for string argument\n");
-				return -1;
-			}
-			m->args[i] = str_start - mbuf;
-			str_start = p;
+	}else{
+		if (unlikely(loglevel == LOG_MSG)) {
+			fdout = STDOUT_FILENO;
+		} else {
+			current_loglevel = log_get_loglevel();
+			if (loglevel > current_loglevel)
+				return 0;
+			fdout = log_get_fd();
 		}
-	}
-	va_end(argptr);
-	m->size = str_start - mbuf;
 
-	/*
-	 * A magic is required to know where we stop writing into a log file,
-	 * if it was not properly closed.  The file is mapped into memory, so a
-	 * space in the file is allocated in advance and at the end it can have
-	 * some unused tail.
-	 */
-	m->magic = MAGIC;
-
-	m->size = roundup(m->size, 8);
-	if (mbuf == _mbuf) {
-		if (flog_enqueue(fdout, m, format))
+		if (mbuf != _mbuf && flog_map_buf(fdout))
 			return -1;
-	} else {
-		mbuf += m->size;
-		mbuf_size -= m->size;
+
+		m = (void *) mbuf;
+
+		m->nargs = nargs;
+		m->mask = mask;
+		str_start = (void *)m->args + sizeof(m->args[0]) * nargs;
+		p = memccpy(str_start, format, 0, mbuf_size - (str_start - mbuf));
+		if (p == NULL) {
+			fprintf(stderr, "No memory for string argument\n");
+			return -1;
+		}
+		m->fmt = str_start - mbuf;
+		str_start = p;
+		va_start(argptr, format);
+		for (i = 0; i < nargs; i++) {
+			m->args[i] = (long)va_arg(argptr, long);
+			/*
+			 * If we got a string, we should either
+			 * reference it when in rodata, or make
+			 * a copy (FIXME implement rodata refs).
+			 */
+
+			if (mask & (1u << i)) {
+				if(m->args[i]){
+					p = memccpy(str_start, (void *)m->args[i], 0, mbuf_size - (str_start - mbuf));
+					if (p == NULL) {
+						fprintf(stderr, "No memory for string argument\n");
+						return -1;
+					}
+				}
+				m->args[i] = str_start - mbuf;
+				str_start = p;
+			}
+		}
+		va_end(argptr);
+		m->size = str_start - mbuf;
+
+		/*
+		 * A magic is required to know where we stop writing into a log file,
+		 * if it was not properly closed.  The file is mapped into memory, so a
+		 * space in the file is allocated in advance and at the end it can have
+		 * some unused tail.
+		 */
+		m->magic = MAGIC;
+
+		m->size = roundup(m->size, 8);
+		if (mbuf == _mbuf) {
+			if (flog_enqueue(fdout, m, format))
+				return -1;
+		} else {
+			mbuf += m->size;
+			mbuf_size -= m->size;
+		}
 	}
 	return 0;
 }

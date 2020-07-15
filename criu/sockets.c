@@ -803,10 +803,11 @@ static int collect_err(int err, struct ns_id *ns, void *arg)
 	 * Rest is more serious, just print enough information.
 	 * In case if everything is OK -- point as well.
 	 */
-	if (!err)
+	if (!err){
 		pr_info("%s: OK\n", msg);
-	else
+	}else{
 		pr_err("%s: %d: %s\n", msg, err, strerror(-err));
+	}
 
 	return err;
 }

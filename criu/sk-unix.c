@@ -1176,10 +1176,11 @@ static int revert_unix_sk_cwd(struct unix_sk_info *ui, int *prev_cwd_fd, int *ro
 		ret = -1;
 	}
 	if (prev_cwd_fd && *prev_cwd_fd >= 0) {
-		if (fchdir(*prev_cwd_fd))
+		if (fchdir(*prev_cwd_fd)){
 			pr_perror("Can't revert working dir");
-		else if (ui->name_dir)
+		}else if (ui->name_dir){
 			pr_debug("Reverted working dir\n");
+		}
 		close(*prev_cwd_fd);
 		*prev_cwd_fd = -1;
 		ret = -1;

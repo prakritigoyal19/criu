@@ -31,6 +31,7 @@
 
 struct cr_options opts;
 char *rpc_cfg_file;
+int log_binary = 0;
 
 static int count_elements(char **to_count)
 {
@@ -630,6 +631,7 @@ int parse_options(int argc, char **argv, bool *usage_error,
 				opts.log_level++;
 			break;
 		case 'b':
+			log_binary = 1;
 			opts.log_in_binary = true;
 			break;
 		case 1043: {
@@ -852,31 +854,32 @@ int parse_options(int argc, char **argv, bool *usage_error,
 	return 0;
 
 bad_arg:
-	if (idx < 0) /* short option */
+	if (idx < 0) /* short option */{
 		pr_err("invalid argument for -%c: %s\n",
 				opt, optarg);
-	else /* long option */
+	}
+	else /* long option */{
 		pr_err("invalid argument for --%s: %s\n",
 				long_opts[idx].name, optarg);
+	}
 	return 1;
 }
 
 int check_options(void)
 {
-	if (opts.tcp_established_ok)
+	if (opts.tcp_established_ok){
 		pr_info("Will dump/restore TCP connections\n");
-	if (opts.tcp_skip_in_flight)
+	}if (opts.tcp_skip_in_flight){
 		pr_info("Will skip in-flight TCP connections\n");
-	if (opts.tcp_close)
+	}if (opts.tcp_close){
 		pr_info("Will drop all TCP connections on restore\n");
-	if (opts.link_remap_ok)
+	}if (opts.link_remap_ok){
 		pr_info("Will allow link remaps on FS\n");
-	if (opts.weak_sysctls)
+	}if (opts.weak_sysctls){
 		pr_info("Will skip non-existant sysctls on restore\n");
-
-	if (opts.deprecated_ok)
+	}if (opts.deprecated_ok){
 		pr_info("Turn deprecated stuff ON\n");
-	else if (getenv("CRIU_DEPRECATED")) {
+	}else if (getenv("CRIU_DEPRECATED")) {
 		pr_info("Turn deprecated stuff ON via env\n");
 		opts.deprecated_ok = true;
 	}
@@ -887,10 +890,10 @@ int check_options(void)
 	}
 
 	if (opts.ps_socket != -1) {
-		if (opts.addr || opts.port)
+		if (opts.addr || opts.port){
 			pr_warn("Using --address or --port in "
 				"combination with --ps-socket is obsolete\n");
-		if (opts.ps_socket <= STDERR_FILENO && opts.daemon_mode) {
+		}if (opts.ps_socket <= STDERR_FILENO && opts.daemon_mode) {
 			pr_err("Standard file descriptors will be closed"
 				" in daemon mode\n");
 			return 1;

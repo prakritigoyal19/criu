@@ -67,7 +67,6 @@ criu/pie/%: pie ;
 # CRIU executable
 PROGRAM-BUILTINS	+= criu/pie/pie.lib.a
 PROGRAM-BUILTINS	+= images/built-in.o
-PROGRAM-BUILTINS	+= flog/src/built-in.o
 PROGRAM-BUILTINS	+= $(obj)/built-in.o
 PROGRAM-BUILTINS	+= $(ARCH-LIB)
 PROGRAM-BUILTINS	+= soccr/libsoccr.a

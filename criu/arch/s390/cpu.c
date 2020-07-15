@@ -46,10 +46,11 @@ static void print_hwcaps(const char *msg, unsigned long hwcap[2])
 		for (cap = 0; cap < 64; cap++) {
 			if (!(hwcap[nr] & (1 << cap)))
 				continue;
-			if (hwcap_str[nr][cap])
+			if (hwcap_str[nr][cap]){
 				pr_debug("%s\n", hwcap_str[nr][cap]);
-			else
+			}else{
 				pr_debug("Capability %d/0x%x\n", nr, 1 << cap);
+			}
 		}
 	}
 }
@@ -123,12 +124,13 @@ int cpu_validate_cpuinfo(void)
 				continue;
 			if (rt_cpuinfo.hwcap[nr] & (1 << cap))
 				continue;
-			if (hwcap_str[nr][cap])
+			if (hwcap_str[nr][cap]){
 				pr_err("CPU Feature %s not supported on host\n",
 				       hwcap_str[nr][cap]);
-			else
+			}else{
 				pr_err("CPU Feature %d/%x not supported on host\n",
 				       nr, 1 << cap);
+			}
 			ret = -1;
 		}
 	}

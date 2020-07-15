@@ -10,6 +10,7 @@
 #include "magic.h"
 #include "bfd.h"
 #include "log.h"
+#include "flog.h"
 #include "common/bug.h"
 
 #define PAGE_RSS	1

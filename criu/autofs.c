@@ -360,10 +360,11 @@ static int autofs_revisit_options(struct mount_info *pm)
 				free(pm->options);
 
 				pm->options = xstrdup(token);
-				if (!pm->options)
+				if (!pm->options){
 					pr_err("failed to duplicate string\n");
-				else
+				}else{
 					ret = 0;
+				}
 				goto close_proc;
 			}
 		}

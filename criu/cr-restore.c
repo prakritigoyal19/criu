@@ -174,9 +174,9 @@ static int __restore_wait_inprogress_tasks(int participants)
 {
 	int ret;
 	futex_t *np = &task_entries->nr_in_progress;
-
 	futex_wait_while_gt(np, participants);
 	ret = (int)futex_get(np);
+
 	if (ret < 0) {
 		set_cr_errno(get_task_cr_err());
 		return ret;
@@ -1483,11 +1483,12 @@ static void sigchld_handler(int signal, siginfo_t *siginfo, void *data)
 		break;
 	}
 
-	if (exit)
+	if (exit){
 		pr_err("%d exited, status=%d\n", pid, status);
-	else
+	}else{
 		pr_err("%d killed by signal %d: %s\n",
 			pid, status, strsignal(status));
+	}
 
 	futex_abort_and_wake(&task_entries->nr_in_progress);
 }

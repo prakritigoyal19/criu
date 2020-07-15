@@ -63,6 +63,10 @@ struct cg_root_opt {
 
 #define DEFAULT_TIMEOUT		10
 
+extern int log_binary;
+
+#define LOG_BINARY log_binary
+
 struct irmap;
 
 struct irmap_path_opt {

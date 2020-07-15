@@ -1844,10 +1844,11 @@ static int restore_shared_options(struct mount_info *mi, bool private, bool shar
 			mi->mnt_id, mi->mountpoint, private, shared, slave);
 
 	if (mi->flags & MS_UNBINDABLE) {
-		if (shared || slave)
+		if (shared || slave){
 			pr_warn("%s has both unbindable and sharing, ignoring unbindable\n", mi->mountpoint);
-		else
+		}else{
 			return mount(NULL, mi->mountpoint, NULL, MS_UNBINDABLE, NULL);
+		}
 	}
 
 	if (private && mount(NULL, mi->mountpoint, NULL, MS_PRIVATE, NULL)) {

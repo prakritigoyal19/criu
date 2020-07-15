@@ -89,13 +89,14 @@ static void sigchld_handler(int signal, siginfo_t *siginfo, void *data)
 	pr_err("si_code=%d si_pid=%d si_status=%d\n",
 		siginfo->si_code, siginfo->si_pid, siginfo->si_status);
 
-	if (WIFEXITED(status))
+	if (WIFEXITED(status)){
 		pr_err("%d exited with %d unexpectedly\n", pid, WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
+	}else if (WIFSIGNALED(status)){
 		pr_err("%d was killed by %d unexpectedly: %s\n",
 			pid, WTERMSIG(status), strsignal(WTERMSIG(status)));
-	else if (WIFSTOPPED(status))
+	}else if (WIFSTOPPED(status)){
 		pr_err("%d was stopped by %d unexpectedly\n", pid, WSTOPSIG(status));
+	}
 
 	exit(1);
 }

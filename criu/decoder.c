@@ -20,8 +20,6 @@ typedef struct {
 #define BUF_SIZE (1<<20)
 static char _mbuf[BUF_SIZE];
 static char *mbuf = _mbuf;
-static char *fbuf;
-static uint64_t fsize;
 static uint64_t mbuf_size = sizeof(_mbuf);
 
 #define LOG_BUF_LEN		(8*1024)
@@ -34,7 +32,7 @@ int decode_all(int fdin, int fdout)
 	void *values[34];
 	size_t i, ret;
 	char *fmt;
-	int size, n;
+	int size;
 
 	while (1) {
 		ret = read(fdin, mbuf, sizeof(m));
@@ -76,9 +74,9 @@ int decode_all(int fdin, int fdout)
 	return 0;
 }
 
-int main(int argc, char *argv[]){
+/*int main(int argc, char *argv[]){
 	int fdin, fdout;
-	fdin = open(argv[1], O_RDONLY);
-	fdout = open(argv[2], O_CREAT|O_TRUNC|O_WRONLY|O_APPEND );
+	fdin = open(argv[1], O_RDONLY, 0600);
+	fdout = open(argv[2], O_CREAT|O_TRUNC|O_WRONLY|O_APPEND, 0600);
 	decode_all(fdin, fdout);
-}
+}*/

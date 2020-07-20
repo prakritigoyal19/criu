@@ -86,8 +86,9 @@ static void print_core_gs_cb(CoreEntry *core)
 		pr_debug("       No GS_CB\n");
 		return;
 	}
-	for (i = 0; i < 4; i++)
+	for (i = 0; i < 4; i++){
 		pr_debug("       gs_cb%d %lx\n", i, gs_cb->regs[i]);
+	}
 }
 
 /*

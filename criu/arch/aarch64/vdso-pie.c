@@ -22,9 +22,9 @@ int vdso_redirect_calls(unsigned long base_to, unsigned long base_from,
 		if (vdso_symbol_empty(&from->symbols[i]))
 			continue;
 
-		pr_debug("br: %lx/%lx -> %lx/%lx (index %d)\n",
+		/*pr_debug("br: %lx/%lx -> %lx/%lx (index %d)\n",
 			 base_from, from->symbols[i].offset,
-			 base_to, to->symbols[i].offset, i);
+			 base_to, to->symbols[i].offset, i);*/
 
 		write_intraprocedure_branch(base_to + to->symbols[i].offset,
 					    base_from + from->symbols[i].offset);

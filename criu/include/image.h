@@ -9,6 +9,7 @@
 #include "fcntl.h"
 #include "magic.h"
 #include "bfd.h"
+#include "flog.h"
 #include "log.h"
 #include "common/bug.h"
 

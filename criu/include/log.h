@@ -8,6 +8,7 @@
 #include <string.h>
 #include <errno.h>
 #include <stdarg.h>
+#include "flog.h"
 
 extern void vprint_on_level(unsigned int loglevel, const char *format,
 		va_list params);
@@ -30,27 +31,29 @@ extern void print_on_level(unsigned int loglevel, const char *format, ...)
 # define LOG_PREFIX
 #endif
 
+#define recieve(loglevel, fmt, ...)		flog_encode(loglevel, fmt, ##__VA_ARGS__);
+
 void flush_early_log_buffer(int fd);
 
 #define print_once(loglevel, fmt, ...)					\
 	do {								\
 		static bool __printed;					\
 		if (!__printed) {					\
-			print_on_level(loglevel, fmt, ##__VA_ARGS__);	\
+			recieve(loglevel, fmt, ##__VA_ARGS__);		\
 			__printed = 1;					\
 		}							\
 	} while (0)
 
 #define pr_msg(fmt, ...)						\
-	print_on_level(LOG_MSG,						\
+	recieve(LOG_MSG,							\
 		       fmt, ##__VA_ARGS__)
 
 #define pr_info(fmt, ...)						\
-	print_on_level(LOG_INFO,					\
+	recieve(LOG_INFO,						\
 		       LOG_PREFIX fmt, ##__VA_ARGS__)
 
 #define pr_err(fmt, ...)						\
-	print_on_level(LOG_ERROR,					\
+	recieve(LOG_ERROR,						\
 		       "Error (%s:%d): " LOG_PREFIX fmt,		\
 		       __FILE__, __LINE__, ##__VA_ARGS__)
 
@@ -58,17 +61,17 @@ void flush_early_log_buffer(int fd);
 	print_once(LOG_ERROR, fmt, ##__VA_ARGS__)
 
 #define pr_warn(fmt, ...)						\
-	print_on_level(LOG_WARN,					\
+	recieve(LOG_WARN,						\
 		       "Warn  (%s:%d): " LOG_PREFIX fmt,		\
 		       __FILE__, __LINE__, ##__VA_ARGS__)
 
 #define pr_warn_once(fmt, ...)						\
-       print_once(LOG_WARN,						\
+       print_once(LOG_WARN,							\
 			"Warn  (%s:%d): " LOG_PREFIX fmt,		\
 			__FILE__, __LINE__, ##__VA_ARGS__)
 
 #define pr_debug(fmt, ...)						\
-	print_on_level(LOG_DEBUG,					\
+	recieve(LOG_DEBUG,						\
 		       LOG_PREFIX fmt, ##__VA_ARGS__)
 
 #ifndef CR_NOGLIBC

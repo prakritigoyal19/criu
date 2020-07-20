@@ -67,8 +67,8 @@ static unsigned long put_trampoline(unsigned long at, struct vdso_symtable *sym)
 		if (vdso_symbol_empty(&sym->symbols[i]))
 			continue;
 
-		pr_debug("Checking '%s' at %lx\n", sym->symbols[i].name,
-			 sym->symbols[i].offset);
+		/*pr_debug("Checking '%s' at %lx\n", sym->symbols[i].name,
+			 sym->symbols[i].offset);*/
 
 		/* find the nearest following symbol we are interested in */
 		for (j=0; j < ARRAY_SIZE(sym->symbols); j++) {
@@ -84,8 +84,8 @@ static unsigned long put_trampoline(unsigned long at, struct vdso_symtable *sym)
 				/* we have a major issue here since we cannot
 				 * even put the trampoline call for this symbol
 				 */
-				pr_err("Can't handle small vDSO symbol %s\n",
-				       sym->symbols[i].name);
+				/*pr_err("Can't handle small vDSO symbol %s\n",
+				       sym->symbols[i].name);*/
 				return 0;
 			}
 
@@ -102,8 +102,8 @@ static unsigned long put_trampoline(unsigned long at, struct vdso_symtable *sym)
 			trampoline = at + sym->symbols[i].offset;
 			trampoline += TRAMP_CALL_SIZE;
 
-			pr_debug("Putting vDSO trampoline in %s at %lx\n",
-				 sym->symbols[i].name, trampoline);
+			/*pr_debug("Putting vDSO trampoline in %s at %lx\n",
+				 sym->symbols[i].name, trampoline);*/
 			memcpy((void *)trampoline, &vdso_trampoline,
 				       size);
 			invalidate_caches(trampoline);
@@ -140,10 +140,10 @@ int vdso_redirect_calls(unsigned long base_to, unsigned long base_from,
 		if (vdso_symbol_empty(&from->symbols[i]))
 			continue;
 
-		pr_debug("br: %lx/%lx -> %lx/%lx (index %d) '%s'\n",
+		/*pr_debug("br: %lx/%lx -> %lx/%lx (index %d) '%s'\n",
 			 base_from, from->symbols[i].offset,
 			 base_to, to->symbols[i].offset, i,
-			 from->symbols[i].name);
+			 from->symbols[i].name);*/
 
 		put_trampoline_call(base_from + from->symbols[i].offset,
 				    base_to + to->symbols[i].offset,

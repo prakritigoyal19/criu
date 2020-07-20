@@ -215,8 +215,8 @@ int sigreturn_prep_fpu_frame_plain(struct rt_sigframe *sigframe,
 		unsigned long addr = (unsigned long)(void *)&fpu_state->fpu_state_64.xsave;
 
 		if ((addr % 64ul)) {
-			pr_err("Unaligned address passed: %lx (native %d)\n",
-			       addr, sigframe->is_native);
+			/*pr_err("Unaligned address passed: %lx (native %d)\n",
+			       addr, sigframe->is_native);*/
 			return -1;
 		}
 
@@ -241,7 +241,7 @@ static int get_task_xsave(pid_t pid, user_fpregs_struct_t *xsave)
 	iov.iov_len = sizeof(*xsave);
 
 	if (ptrace(PTRACE_GETREGSET, pid, (unsigned int)NT_X86_XSTATE, &iov) < 0) {
-		pr_perror("Can't obtain FPU registers for %d", pid);
+		/*pr_perror("Can't obtain FPU registers for %d", pid);*/
 		return -1;
 	}
 
@@ -251,7 +251,7 @@ static int get_task_xsave(pid_t pid, user_fpregs_struct_t *xsave)
 static int get_task_fpregs(pid_t pid, user_fpregs_struct_t *xsave)
 {
 	if (ptrace(PTRACE_GETFPREGS, pid, NULL, xsave)) {
-		pr_perror("Can't obtain FPU registers for %d", pid);
+		/*pr_perror("Can't obtain FPU registers for %d", pid);*/
 		return -1;
 	}
 
@@ -264,8 +264,8 @@ int get_task_regs(pid_t pid, user_regs_struct_t *regs, save_regs_t save,
 	user_fpregs_struct_t xsave = { }, *xs = NULL;
 	int ret = -1;
 
-	pr_info("Dumping general registers for %d in %s mode\n", pid,
-			user_regs_native(regs) ? "native" : "compat");
+	/*pr_info("Dumping general registers for %d in %s mode\n", pid,
+			user_regs_native(regs) ? "native" : "compat");*/
 
 	/* Did we come from a system call? */
 	if (get_signed_user_reg(regs, orig_ax) >= 0) {
@@ -278,7 +278,7 @@ int get_task_regs(pid_t pid, user_regs_struct_t *regs, save_regs_t save,
 			set_user_reg(regs, ip, get_user_reg(regs, ip) - 2);
 			break;
 		case -ERESTART_RESTARTBLOCK:
-			pr_warn("Will restore %d with interrupted system call\n", pid);
+			/*pr_warn("Will restore %d with interrupted system call\n", pid);*/
 			set_user_reg(regs, ax, -EINTR);
 			break;
 		}
@@ -292,7 +292,7 @@ int get_task_regs(pid_t pid, user_regs_struct_t *regs, save_regs_t save,
 	 * thus decode it accrodingly.
 	 */
 
-	pr_info("Dumping GP/FPU registers for %d\n", pid);
+	/*pr_info("Dumping GP/FPU registers for %d\n", pid);*/
 
 	if (!compel_cpu_has_feature(X86_FEATURE_OSXSAVE)) {
 		ret = get_task_fpregs(pid, &xsave);

@@ -1564,9 +1564,9 @@ err:
 	if (write_img_inventory(&he))
 		ret = -1;
 
-	if (ret)
+	if (ret){
 		pr_err("Pre-dumping FAILED.\n");
-	else {
+	}else{
 		write_stats(DUMP_STATS);
 		pr_info("Pre-dumping finished successfully\n");
 	}
@@ -1675,10 +1675,11 @@ static int cr_lazy_mem_dump(void)
 		}
 	}
 
-	if (ret)
+	if (ret){
 		pr_err("Lazy pages transfer FAILED.\n");
-	else
+	}else{
 		pr_info("Lazy pages transfer finished successfully\n");
+	}
 
 	return ret;
 }

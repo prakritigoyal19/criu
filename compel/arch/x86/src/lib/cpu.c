@@ -139,9 +139,9 @@ static int compel_fpuid(compel_cpuinfo_t *c)
 	cpuid_count(XSTATE_CPUID, 1, &eax, &ebx, &ecx, &edx);
 	c->xsaves_size = ebx;
 
-	pr_debug("fpu: xfeatures_mask 0x%llx xsave_size %u xsave_size_max %u xsaves_size %u\n",
+	/*pr_debug("fpu: xfeatures_mask 0x%llx xsave_size %u xsave_size_max %u xsaves_size %u\n",
 		 (unsigned long long)c->xfeatures_mask,
-		 c->xsave_size, c->xsave_size_max, c->xsaves_size);
+		 c->xsave_size, c->xsave_size_max, c->xsaves_size);*/
 
 	if (c->xsave_size_max > sizeof(struct xsave_struct))
 		pr_warn_once("fpu: max xsave frame exceed xsave_struct (%u %u)\n",
@@ -240,9 +240,9 @@ static int compel_fpuid(compel_cpuinfo_t *c)
 		for (i = 0; i < ARRAY_SIZE(c->xstate_offsets); i++) {
 			if (!(c->xfeatures_mask & (1UL << i)))
 				continue;
-			pr_debug("fpu: %-32s xstate_offsets %6d / %-6d xstate_sizes %6d / %-6d\n",
+			/*pr_debug("fpu: %-32s xstate_offsets %6d / %-6d xstate_sizes %6d / %-6d\n",
 				 xfeature_names[i], c->xstate_offsets[i], c->xstate_comp_offsets[i],
-				 c->xstate_sizes[i], c->xstate_comp_sizes[i]);
+				 c->xstate_sizes[i], c->xstate_comp_sizes[i]);*/
 		}
 	}
 
@@ -440,8 +440,8 @@ int compel_cpuid(compel_cpuinfo_t *c)
 		break;
 	}
 
-	pr_debug("x86_family %u x86_vendor_id %s x86_model_id %s\n",
-		 c->x86_family, c->x86_vendor_id, c->x86_model_id);
+	/*pr_debug("x86_family %u x86_vendor_id %s x86_model_id %s\n",
+		 c->x86_family, c->x86_vendor_id, c->x86_model_id);*/
 
 	return compel_fpuid(c);
 }

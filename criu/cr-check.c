@@ -203,10 +203,11 @@ static int check_prctl_cat1(void)
 		pr_msg("Info  prctl: PR_SET_MM_MAP_SIZE is not supported\n");
 		ret = prctl(PR_SET_MM, PR_SET_MM_BRK, (unsigned long)sbrk(0), 0, 0);
 		if (ret < 0) {
-			if (errno == EPERM)
+			if (errno == EPERM){
 				pr_msg("prctl: One needs CAP_SYS_RESOURCE capability to perform testing\n");
-			else
+			}else{
 				pr_msg("prctl: PR_SET_MM_BRK is not supported: %m\n");
+			}
 			return -1;
 		}
 

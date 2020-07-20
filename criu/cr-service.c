@@ -1280,12 +1280,13 @@ static void reap_worker(int signo)
 			return;
 		}
 
-		if (WIFEXITED(status))
+		if (WIFEXITED(status)){
 			pr_info("Worker(pid %d) exited with %d\n",
 				pid, WEXITSTATUS(status));
-		else if (WIFSIGNALED(status))
+		}else if (WIFSIGNALED(status)){
 			pr_info("Worker(pid %d) was killed by %d: %s\n", pid,
 				WTERMSIG(status), strsignal(WTERMSIG(status)));
+		}
 	}
 }
 

@@ -1534,10 +1534,11 @@ int stop_usernsd(void)
 		usernsd_pid = 0;
 		sigprocmask(SIG_SETMASK, &oldmask, NULL);
 
-		if (ret != 0)
+		if (ret != 0){
 			pr_err("uns: daemon exited abnormally\n");
-		else
+		}else{
 			pr_info("uns: daemon stopped\n");
+		}
 	}
 
 	return ret;

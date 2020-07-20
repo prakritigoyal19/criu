@@ -44,9 +44,9 @@ int vdso_redirect_calls(unsigned long base_to, unsigned long base_from,
 		if (vdso_symbol_empty(&sfrom->symbols[i]))
 			continue;
 
-		pr_debug("jmp: %lx/%lx -> %lx/%lx (index %d)\n",
+		/*pr_debug("jmp: %lx/%lx -> %lx/%lx (index %d)\n",
 			 base_from, sfrom->symbols[i].offset,
-			 base_to, sto->symbols[i].offset, i);
+			 base_to, sto->symbols[i].offset, i);*/
 
 		from = base_from + sfrom->symbols[i].offset;
 		to = base_to + sto->symbols[i].offset;

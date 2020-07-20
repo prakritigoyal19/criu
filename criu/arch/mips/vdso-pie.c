@@ -16,6 +16,6 @@ int vdso_redirect_calls(unsigned long base_to, unsigned long base_from,
 			struct vdso_symtable *sto, struct vdso_symtable *sfrom,
 			bool compat_vdso)
 {
-    pr_err("Vdso proxification isn't implemented on mips\n");
+    /*pr_err("Vdso proxification isn't implemented on mips\n");*/
     return -1;
 }

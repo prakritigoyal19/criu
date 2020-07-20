@@ -10,6 +10,7 @@
 #endif
 
 #include <sys/mman.h>
+#include "flog.h"
 
 static inline void *alloc_compat_syscall_stack(void)
 {

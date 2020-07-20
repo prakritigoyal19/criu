@@ -48,10 +48,11 @@ int check_timerfd(void)
 	} else {
 		ret = ioctl(fd, TFD_IOC_SET_TICKS, NULL);
 		if (ret < 0) {
-			if (errno != EFAULT)
+			if (errno != EFAULT){
 				pr_perror("No timerfd support for c/r");
-			else
+			}else{
 				ret = 0;
+			}
 		}
 	}
 

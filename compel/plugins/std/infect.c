@@ -47,12 +47,12 @@ static int __parasite_daemon_reply_ack(unsigned int cmd, int err)
 	m = ctl_msg_ack(cmd, err);
 	ret = sys_sendto(tsock, &m, sizeof(m), 0, NULL, 0);
 	if (ret != sizeof(m)) {
-		pr_err("Sent only %d bytes while %zu expected\n", ret, sizeof(m));
+		/*pr_err("Sent only %d bytes while %zu expected\n", ret, sizeof(m));*/
 		return -1;
 	}
 
-	pr_debug("__sent ack msg: %d %d %d\n",
-		 m.cmd, m.ack, m.err);
+	/*pr_debug("__sent ack msg: %d %d %d\n",
+		 m.cmd, m.ack, m.err);*/
 
 	return 0;
 }
@@ -61,19 +61,19 @@ static int __parasite_daemon_wait_msg(struct ctl_msg *m)
 {
 	int ret;
 
-	pr_debug("Daemon waits for command\n");
+	/*pr_debug("Daemon waits for command\n");*/
 
 	while (1) {
 		*m = (struct ctl_msg){ };
 		ret = sys_recvfrom(tsock, m, sizeof(*m), MSG_WAITALL, NULL, 0);
 		if (ret != sizeof(*m)) {
-			pr_err("Trimmed message received (%d/%d)\n",
-			       (int)sizeof(*m), ret);
+			/*pr_err("Trimmed message received (%d/%d)\n",
+			       (int)sizeof(*m), ret);*/
 			return -1;
 		}
 
-		pr_debug("__fetched msg: %d %d %d\n",
-			 m->cmd, m->ack, m->err);
+		/*pr_debug("__fetched msg: %d %d %d\n",
+			 m->cmd, m->ack, m->err);*/
 		return 0;
 	}
 
@@ -94,8 +94,8 @@ static int fini(void)
 	parasite_cleanup();
 
 	new_sp = (long)sigframe + RT_SIGFRAME_OFFSET(sigframe);
-	pr_debug("%ld: new_sp=%lx ip %lx\n", sys_gettid(),
-		  new_sp, RT_SIGFRAME_REGIP(sigframe));
+	/*pr_debug("%ld: new_sp=%lx ip %lx\n", sys_gettid(),
+		  new_sp, RT_SIGFRAME_REGIP(sigframe));*/
 
 	sys_close(tsock);
 	std_log_set_fd(-1);
@@ -112,7 +112,7 @@ static noinline __used int noinline parasite_daemon(void *args)
 	struct ctl_msg m;
 	int ret = -1;
 
-	pr_debug("Running daemon thread leader\n");
+	/*pr_debug("Running daemon thread leader\n");*/
 
 	/* Reply we're alive */
 	if (__parasite_daemon_reply_ack(PARASITE_CMD_INIT_DAEMON, 0))
@@ -125,7 +125,7 @@ static noinline __used int noinline parasite_daemon(void *args)
 			break;
 
 		if (ret && m.cmd != PARASITE_CMD_FINI) {
-			pr_err("Command rejected\n");
+			/*pr_err("Command rejected\n");*/
 			continue;
 		}
 
@@ -138,7 +138,7 @@ static noinline __used int noinline parasite_daemon(void *args)
 			break;
 
 		if (ret) {
-			pr_err("Close the control socket for writing\n");
+			/*pr_err("Close the control socket for writing\n");*/
 			sys_shutdown(tsock, SHUT_WR);
 		}
 	}
@@ -162,13 +162,13 @@ static noinline __used int parasite_init_daemon(void *data)
 
 	ret = tsock = sys_socket(PF_UNIX, SOCK_SEQPACKET, 0);
 	if (tsock < 0) {
-		pr_err("Can't create socket: %d\n", tsock);
+		/*pr_err("Can't create socket: %d\n", tsock);*/
 		goto err;
 	}
 
 	ret = sys_connect(tsock, (struct sockaddr *)&args->h_addr, args->h_addr_len);
 	if (ret < 0) {
-		pr_err("Can't connect the control socket\n");
+		/*pr_err("Can't connect the control socket\n");*/
 		goto err;
 	}
 
@@ -198,7 +198,7 @@ err:
 
 int __used __parasite_entry parasite_service(unsigned int cmd, void *args)
 {
-	pr_info("Parasite cmd %d/%x process\n", cmd, cmd);
+	/*pr_info("Parasite cmd %d/%x process\n", cmd, cmd);*/
 
 	if (cmd == PARASITE_CMD_INIT_DAEMON)
 		return parasite_init_daemon(args);

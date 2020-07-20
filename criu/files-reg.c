@@ -1553,10 +1553,11 @@ static void rm_parent_dirs(int mntns_root, char *path, int count)
 		if (prev)
 			*prev = '/';
 
-		if (unlinkat(mntns_root, path, AT_REMOVEDIR))
+		if (unlinkat(mntns_root, path, AT_REMOVEDIR)){
 			pr_perror("Can't remove %s AT %d", path, mntns_root);
-		else
+		}else{
 			pr_debug("Unlinked parent dir: %s AT %d\n", path, mntns_root);
+		}
 		prev = p;
 	}
 

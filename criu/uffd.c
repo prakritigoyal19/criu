@@ -756,10 +756,11 @@ static int ud_open(int client, struct lazy_pages_info **_lpi)
 	 * the FD for UFFD */
 	ret = recv(client, &lpi->pid, sizeof(lpi->pid), 0);
 	if (ret != sizeof(lpi->pid)) {
-		if (ret < 0)
+		if (ret < 0){
 			pr_perror("PID recv error");
-		else
+		}else{
 			pr_err("PID recv: short read\n");
+		}
 		goto out;
 	}
 
@@ -1214,10 +1215,11 @@ static int handle_uffd_event(struct epoll_rfd *lpfd)
 		/* we've already handled the page fault for another thread */
 		if (errno == EAGAIN)
 			return 0;
-		if (ret < 0)
+		if (ret < 0){
 			lp_perror(lpi, "Can't read uffd message");
-		else
+		}else{
 			lp_err(lpi, "Can't read uffd message: short read");
+		}
 		return -1;
 	}
 

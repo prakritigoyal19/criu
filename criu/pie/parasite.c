@@ -458,10 +458,11 @@ static int get_proc_fd(void)
 
 	ret = sys_mount("proc", proc_mountpoint, "proc", MS_MGC_VAL, NULL);
 	if (ret) {
-		if (ret == -EPERM)
+		if (ret == -EPERM){
 			pr_err("can't dump unpriviliged task whose /proc doesn't belong to it\n");
-		else
+		}else{
 			pr_err("mount failed (%d)\n", ret);
+		}
 		sys_rmdir(proc_mountpoint);
 		return -1;
 	}

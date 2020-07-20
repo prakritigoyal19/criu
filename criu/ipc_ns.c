@@ -319,9 +319,9 @@ static int ipc_sysctl_req(IpcVarEntry *e, int op)
 	int nr = NR_MANDATORY_IPC_SYSCTLS;
 
 	/* Skip sysctls which can't be set or haven't existed on dump */
-	if (access("/proc/sys/fs/mqueue", X_OK))
+	if (access("/proc/sys/fs/mqueue", X_OK)){
 		pr_info("Mqueue sysctls are missing\n");
-	else {
+	}else {
 		nr += 3;
 		if (e->has_mq_msg_default) {
 			req[nr++] = req[12];

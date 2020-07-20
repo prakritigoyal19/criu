@@ -736,9 +736,9 @@ static int kerndat_has_fsopen(void)
 		pr_err("fsopen should fail\n");
 		return -1;
 	}
-	if (errno == ENOSYS)
+	if (errno == ENOSYS){
 		pr_info("The new mount API (fsopen, fsmount) isn't supported\n");
-	else
+	}else
 		kdat.has_fsopen = true;
 
 	return 0;
@@ -831,10 +831,11 @@ static int kerndat_try_load_cache(void)
 
 	fd = open(KERNDAT_CACHE_FILE, O_RDONLY);
 	if (fd < 0) {
-		if(ENOENT == errno)
+		if(ENOENT == errno){
 			pr_debug("File %s does not exist\n", KERNDAT_CACHE_FILE);
-		else
+		}else{
 			pr_warn("Can't load %s\n", KERNDAT_CACHE_FILE);
+		}
 		return 1;
 	}
 

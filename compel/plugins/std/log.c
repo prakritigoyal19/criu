@@ -355,6 +355,26 @@ void print_on_level(unsigned int loglevel, const char *format, ...)
 	sbuf_log_flush(&b);
 }
 
+int flog_encode_msg(int loglevel, unsigned int nargs, unsigned int mask, const char *format, ...){
+	/*TO DO: Change this to add binary logging here*/
+
+	va_list args;
+	struct simple_buf b;
+
+	if (loglevel > cur_loglevel)
+		return 0;
+
+	sbuf_log_init(&b);
+
+	va_start(args, format);
+	sbuf_printf(&b, format, args);
+	va_end(args);
+
+	sbuf_log_flush(&b);
+	return 0;
+}
+
+
 void std_sprintf(char output[STD_LOG_SIMPLE_CHUNK], const char *format, ...)
 {
 	va_list args;

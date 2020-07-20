@@ -2804,10 +2804,11 @@ int netns_keep_nsfd(void)
 		return -1;
 
 	ret = install_service_fd(NS_FD_OFF, ns_fd);
-	if (ret < 0)
+	if (ret < 0){
 		pr_err("Can't install ns net reference\n");
-	else
+	}else{
 		pr_info("Saved netns fd for links restore\n");
+	}
 
 	return ret >= 0 ? 0 : -1;
 }
@@ -3162,10 +3163,11 @@ void check_has_netns_ioc(int fd, bool *kdat_val, const char *name)
 	ns_fd = ioctl(fd, SIOCGSKNS);
 	*kdat_val = (ns_fd >= 0);
 
-	if (ns_fd < 0)
+	if (ns_fd < 0){
 		pr_warn("Unable to get %s network namespace\n", name);
-	else
+	}else{
 		close(ns_fd);
+	}
 }
 
 int kerndat_socket_netns(void)

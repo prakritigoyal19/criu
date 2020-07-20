@@ -444,7 +444,7 @@ int parse_options(int argc, char **argv, bool *usage_error,
 		{OPT_NAME, no_argument, SAVE_TO, true},\
 		{"no-" OPT_NAME, no_argument, SAVE_TO, false}
 
-	static const char short_opts[] = "dSsRt:hD:o:v::x::Vr:jJ:lW:L:M:";
+	static const char short_opts[] = "dSsRt:hD:o:v::b::x::Vr:jJ:lW:L:M:";
 	static struct option long_opts[] = {
 		{ "tree",			required_argument,	0, 't'	},
 		{ "leave-stopped",		no_argument,		0, 's'	},
@@ -511,6 +511,7 @@ int parse_options(int argc, char **argv, bool *usage_error,
 		{ "status-fd",			required_argument,	0, 1088 },
 		BOOL_OPT(SK_CLOSE_PARAM, &opts.tcp_close),
 		{ "verbosity",			optional_argument,	0, 'v'	},
+		{ "binary-file",		optional_argument,	0, 'b' },
 		{ "ps-socket",			required_argument,	0, 1091},
 		BOOL_OPT("stream", &opts.stream),
 		{ "config",			required_argument,	0, 1089},
@@ -629,6 +630,9 @@ int parse_options(int argc, char **argv, bool *usage_error,
 					opts.log_level = atoi(optarg);
 			} else
 				opts.log_level++;
+			break;
+		case 'b':
+			opts.log_in_binary = true;
 			break;
 		case 1043: {
 			int fd;
@@ -864,12 +868,13 @@ int parse_options(int argc, char **argv, bool *usage_error,
 	return 0;
 
 bad_arg:
-	if (idx < 0) /* short option */
+	if (idx < 0){ /* short option */
 		pr_err("invalid argument for -%c: %s\n",
 				opt, optarg);
-	else /* long option */
+	}else{ /* long option */
 		pr_err("invalid argument for --%s: %s\n",
 				long_opts[idx].name, optarg);
+	}
 	return 1;
 }
 
@@ -886,9 +891,9 @@ int check_options(void)
 	if (opts.weak_sysctls)
 		pr_info("Will skip non-existant sysctls on restore\n");
 
-	if (opts.deprecated_ok)
+	if (opts.deprecated_ok){
 		pr_info("Turn deprecated stuff ON\n");
-	else if (getenv("CRIU_DEPRECATED")) {
+	}else if (getenv("CRIU_DEPRECATED")) {
 		pr_info("Turn deprecated stuff ON via env\n");
 		opts.deprecated_ok = true;
 	}

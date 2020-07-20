@@ -628,10 +628,11 @@ int write_img_buf(struct cr_img *img, const void *ptr, int size)
 	if (ret == size)
 		return 0;
 
-	if (ret < 0)
+	if (ret < 0){
 		pr_perror("Can't write img file");
-	else
+	}else{
 		pr_err("Img trimmed %d/%d\n", ret, size);
+	}
 	return -1;
 }
 
@@ -652,10 +653,11 @@ int read_img_buf_eof(struct cr_img *img, void *ptr, int size)
 	if (ret == 0)
 		return 0;
 
-	if (ret < 0)
+	if (ret < 0){
 		pr_perror("Can't read img file");
-	else
+	}else{
 		pr_err("Img trimmed %d/%d\n", ret, size);
+	}
 	return -1;
 }
 

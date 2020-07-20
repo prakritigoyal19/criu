@@ -571,9 +571,9 @@ int vdso_init_dump(void)
 		return 0;
 	}
 
-	if (kdat.pmap != PM_FULL)
+	if (kdat.pmap != PM_FULL){
 		pr_info("VDSO detection turned off\n");
-	else if (vaddr_to_pfn(-1, vdso_maps.vdso_start, &vdso_pfn))
+	}else if (vaddr_to_pfn(-1, vdso_maps.vdso_start, &vdso_pfn))
 		return -1;
 
 	return 0;

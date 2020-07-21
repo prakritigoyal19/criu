@@ -30,8 +30,8 @@ static char buf_off = 0;
 
 int decode_all(int fdin, int fdout)
 {
-	flog_msg_t *m = (void *)mbuf;
-	void *values[34];
+	flog_msg_t *m = (char *)mbuf;
+	char *values[34];
 	size_t i, ret;
 	char *fmt;
 	int size, n;
@@ -63,13 +63,13 @@ int decode_all(int fdin, int fdout)
 		values[0] = &fmt;
 
 		for (i = 0; i < m->nargs; i++) {
-			values[i + 1] = (void *)&m->args[i];
+			values[i + 1] = (char *)&m->args[i];
 			if (m->mask & (1u << i)) {
 				m->args[i] = (long)(mbuf + m->args[i]);
 			}
 		}
 
-		size  = vsnprintf(buffer + buf_off, sizeof buffer - buf_off, fmt, (void *)values);
+		size  = vsnprintf(buffer + buf_off, sizeof buffer - buf_off, fmt, (char *)values);
 		size += buf_off;
 		ret = write(fdout, buffer, size );
 	}

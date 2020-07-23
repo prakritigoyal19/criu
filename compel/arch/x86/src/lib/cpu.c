@@ -29,7 +29,7 @@ static void fetch_rt_cpuinfo(void)
  * to save/restore PT state in Linux.
  */
 
-static const char * const xfeature_names[] = {
+/*static const char * const xfeature_names[] = {
 	"x87 floating point registers"	,
 	"SSE registers"			,
 	"AVX registers"			,
@@ -41,7 +41,7 @@ static const char * const xfeature_names[] = {
 	"Processor Trace"		,
 	"Protection Keys User registers",
 	"Hardware Duty Cycling"		,
-};
+};*/
 
 static short xsave_cpuid_features[] = {
 	X86_FEATURE_FPU,
@@ -89,8 +89,8 @@ static int compel_fpuid(compel_cpuinfo_t *c)
 	uint32_t eax, ebx, ecx, edx;
 	size_t i;
 
-	BUILD_BUG_ON(ARRAY_SIZE(xsave_cpuid_features) !=
-		     ARRAY_SIZE(xfeature_names));
+	/*BUILD_BUG_ON(ARRAY_SIZE(xsave_cpuid_features) !=
+		     ARRAY_SIZE(xfeature_names));*/
 
 	if (!compel_test_cpu_cap(c, X86_FEATURE_FPU)) {
 		pr_err("fpu: No FPU detected\n");
@@ -240,9 +240,9 @@ static int compel_fpuid(compel_cpuinfo_t *c)
 		for (i = 0; i < ARRAY_SIZE(c->xstate_offsets); i++) {
 			if (!(c->xfeatures_mask & (1UL << i)))
 				continue;
-			pr_debug("fpu: %-32s xstate_offsets %6d / %-6d xstate_sizes %6d / %-6d\n",
+			/*pr_debug("fpu: %-32s xstate_offsets %6d / %-6d xstate_sizes %6d / %-6d\n",
 				 xfeature_names[i], c->xstate_offsets[i], c->xstate_comp_offsets[i],
-				 c->xstate_sizes[i], c->xstate_comp_sizes[i]);
+				 c->xstate_sizes[i], c->xstate_comp_sizes[i]);*/
 		}
 	}
 

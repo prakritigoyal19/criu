@@ -12,6 +12,8 @@
 #include "log.h"
 #include "util-pie.h"
 
+#include "flog.h"
+
 #ifdef CR_NOGLIBC
 # include <compel/plugins/std/syscall.h>
 # define __sys(foo)     sys_##foo

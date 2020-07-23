@@ -30,6 +30,7 @@
 #include "signal.h"
 #include "prctl.h"
 #include "criu-log.h"
+#include "flog.h"
 #include "util.h"
 #include "image.h"
 #include "sk-inet.h"

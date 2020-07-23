@@ -5,9 +5,9 @@
 #include "common/lock.h"
 #include "common/page.h"
 
-#define pr_err(fmt, ...)	print_on_level(1, fmt, ##__VA_ARGS__)
-#define pr_info(fmt, ...)	print_on_level(3, fmt, ##__VA_ARGS__)
-#define pr_debug(fmt, ...)	print_on_level(4, fmt, ##__VA_ARGS__)
+#define pr_err(fmt, ...)	/*print_on_level(1, fmt, ##__VA_ARGS__)*/
+#define pr_info(fmt, ...)	/*print_on_level(3, fmt, ##__VA_ARGS__)*/
+#define pr_debug(fmt, ...)	/*print_on_level(4, fmt, ##__VA_ARGS__)*/
 
 #include "common/bug.h"
 

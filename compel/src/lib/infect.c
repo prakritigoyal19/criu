@@ -200,7 +200,7 @@ int compel_wait_task(int pid, int ppid,
 {
 	siginfo_t si;
 	int status, nr_sigstop;
-	int ret = 0, ret2, wait_errno = 0;
+	int ret = 0, ret2/*, wait_errno = 0*/;
 
 	/*
 	 * It's ugly, but the ptrace API doesn't allow to distinguish
@@ -212,7 +212,7 @@ int compel_wait_task(int pid, int ppid,
 try_again:
 
 	ret = wait4(pid, &status, __WALL, NULL);
-	if (ret < 0) {
+	/*if (ret < 0) {*/
 		/*
 		 * wait4() can expectedly fail only in a first time
 		 * if a task is zombie. If we are here from try_again,
@@ -220,8 +220,8 @@ try_again:
 		 *
 		 * So here we can be only once in this function.
 		 */
-		wait_errno = errno;
-	}
+		/*wait_errno = errno;
+	}*/
 
 	ret2 = get_status(pid, ss, data);
 	if (ret2)
@@ -1475,7 +1475,7 @@ static bool task_is_trapped(int status, pid_t pid)
 static inline int is_required_syscall(user_regs_struct_t *regs, pid_t pid,
 		const int sys_nr, const int sys_nr_compat)
 {
-	const char *mode = user_regs_native(regs) ? "native" : "compat";
+	/*const char *mode = user_regs_native(regs) ? "native" : "compat";*/
 	int req_sysnr = user_regs_native(regs) ? sys_nr : sys_nr_compat;
 
 	pr_debug("%d (%s) is going to execute the syscall %lu, required is %d\n",

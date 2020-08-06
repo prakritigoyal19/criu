@@ -1,0 +1,93 @@
+Version: 3.14 (gitid v3.14-84-g703f453e)
+Running on prakriti Linux 5.3.0-62-generic #56~18.04.1-Ubuntu SMP Wed Jun 24 16:17:03 UTC 2020 x86_64
+Loaded kdat cache from /run/criu.kdat
+rlimit: RLIMIT_NOFILE unlimited for self
+cpu: fpu:1 fxsr:1 xsave:1 xsaveopt:1 xsavec:1 xgetbv1:1 xsaves:1
+kernel pid_max=32768
+Reading image tree
+Add mnt ns 13 pid 1
+Add net ns 10 pid 1
+Add pid ns 9 pid 1
+pstree pid_max=6
+Will restore in 6c020000 namespaces
+NS mask to use 6c020000
+Collecting 50/56 (flags 3)
+ `- ... done
+Collecting 40/54 (flags 2)
+Collected [zdtm/static/socket-tcpbuf-local] ID 0x1
+Collected [lib/x86_64-linux-gnu/libc.so.6] ID 0x2
+Collected [lib64/ld-linux-x86-64.so.2] ID 0x3
+Collected [dev/null] ID 0x4
+Collected [zdtm/static/socket-tcpbuf-local.outns] ID 0x5
+Collected [zdtm/static] ID 0x6
+Collected [.] ID 0x7
+Collected [dev/null] ID 0x9
+Collected [zdtm/static/socket-tcpbuf-local.out.inprogress] ID 0xa
+Collected [zdtm/static] ID 0xb
+Collected pipe entry ID 0xf PIPE ID 0x1aede
+ `- ... done
+Collecting 46/65 (flags 0)
+No remap-fpath.img image
+ `- ... done
+No cgroup.img image
+Running pre-restore scripts
+Saved netns fd for links restore
+mnt: Reading mountpoint images (id 13 pid 1)
+mnt: 		Will mount 1012 from /
+mnt: 		Will mount 1012 @ /tmp/.criu.mntns.0kWd7g/13-0000000000/dev/pts
+mnt: 	Read 1012 mp @ /tmp/.criu.mntns.0kWd7g/13-0000000000/dev/pts
+mnt: 		Will mount 1071 from /
+mnt: 		Will mount 1071 @ /tmp/.criu.mntns.0kWd7g/13-0000000000/run
+mnt: 	Read 1071 mp @ /tmp/.criu.mntns.0kWd7g/13-0000000000/run
+mnt: 		Will mount 1070 from /
+mnt: 		Will mount 1070 @ /tmp/.criu.mntns.0kWd7g/13-0000000000/proc
+mnt: 	Read 1070 mp @ /tmp/.criu.mntns.0kWd7g/13-0000000000/proc
+mnt: 		Will mount 1069 from /home/prakriti/gsoc/criu/test
+mnt: 		Will mount 1069 @ /tmp/.criu.mntns.0kWd7g/13-0000000000/
+mnt: 	Read 1069 mp @ /tmp/.criu.mntns.0kWd7g/13-0000000000/
+mnt: Building mountpoints tree
+mnt: 	Building plain mount tree
+mnt: 		Working on 1069->1011
+mnt: 		Working on 1070->1069
+mnt: 		Working on 1071->1069
+mnt: 		Working on 1012->1069
+mnt: 	Resorting children of 1069 in mount order
+mnt: 	Resorting children of 1012 in mount order
+mnt: 	Resorting children of 1070 in mount order
+mnt: 	Resorting children of 1071 in mount order
+mnt: Done:
+mnt: [/tmp/.criu.mntns.0kWd7g/13-0000000000/](1069->1011)
+mnt:  [/tmp/.criu.mntns.0kWd7g/13-0000000000/dev/pts](1012->1069)
+mnt:  <--
+mnt:  [/tmp/.criu.mntns.0kWd7g/13-0000000000/proc](1070->1069)
+mnt:  <--
+mnt:  [/tmp/.criu.mntns.0kWd7g/13-0000000000/run](1071->1069)
+mnt:  <--
+mnt: <--
+No pidns-9.img image
+Forking task with 1 pid (flags 0x6c020000)
+PID: real 141 virt 1
+Wait until namespaces are created
+Running setup-namespaces scripts
+cg: Cgroups 1 inherited from parent
+Calling restore_sid() for init
+Restoring 1 to 1 sid
+Collecting 44/37 (flags 2)
+No tty-info.img image
+ `- ... done
+Collecting 45/51 (flags 0)
+No tty-data.img image
+ `- ... done
+Restoring namespaces 1 flags 0x6c020000
+kernel/hostname nr 8
+kernel/domainname nr 6
+Restoring IPC namespace
+Restoring IPC variables
+Restoring IPC shared memory
+No ipcns-shm-11.img image
+Restoring IPC message queues
+No ipcns-msg-11.img image
+Restoring IPC semaphores sets
+No ipcns-sem-11.img image
+Try to restore a link 10:1:loRestoring link lo type 1
+	Running ip addr restore  

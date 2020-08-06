@@ -345,6 +345,8 @@ void print_on_level(unsigned int loglevel, const char *format, ...)
 
 	if (loglevel > cur_loglevel)
 		return;
+	else
+		return;
 
 	sbuf_log_init(&b);
 
@@ -353,6 +355,14 @@ void print_on_level(unsigned int loglevel, const char *format, ...)
 	va_end(args);
 
 	sbuf_log_flush(&b);
+}
+
+int flog_encode_msg(int loglevel, unsigned int nargs, unsigned int mask, const char *format, ...){
+	/*This function is added as multiple file
+	are using the compels print_on_level after
+	being expanded by macros from criu/log.h*/
+
+	return 0;
 }
 
 void std_sprintf(char output[STD_LOG_SIMPLE_CHUNK], const char *format, ...)

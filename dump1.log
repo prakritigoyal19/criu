@@ -1,0 +1,117 @@
+Version: 3.14 (gitid v3.14-84-g703f453e)
+Running on prakriti Linux 5.3.0-62-generic #56~18.04.1-Ubuntu SMP Wed Jun 24 16:17:03 UTC 2020 x86_64
+Loaded kdat cache from /run/criu.kdat
+========================================
+Dumping processes (pid: 55)
+========================================
+rlimit: RLIMIT_NOFILE unlimited for self
+Running pre-dump scripts
+irmap: Searching irmap cache in work dir
+No irmap-cache image
+irmap: Searching irmap cache in parent
+irmap: No irmap cache
+cpu: fpu:1 fxsr:1 xsave:1 xsaveopt:1 xsavec:1 xgetbv1:1 xsaves:1
+cg-prop: Parsing controller "cpu"
+cg-prop: 	Strategy "replace"
+cg-prop: 	Property "cpu.shares"
+cg-prop: 	Property "cpu.cfs_period_us"
+cg-prop: 	Property "cpu.cfs_quota_us"
+cg-prop: 	Property "cpu.rt_period_us"
+cg-prop: 	Property "cpu.rt_runtime_us"
+cg-prop: Parsing controller "memory"
+cg-prop: 	Strategy "replace"
+cg-prop: 	Property "memory.limit_in_bytes"
+cg-prop: 	Property "memory.memsw.limit_in_bytes"
+cg-prop: 	Property "memory.swappiness"
+cg-prop: 	Property "memory.soft_limit_in_bytes"
+cg-prop: 	Property "memory.move_charge_at_immigrate"
+cg-prop: 	Property "memory.oom_control"
+cg-prop: 	Property "memory.use_hierarchy"
+cg-prop: 	Property "memory.kmem.limit_in_bytes"
+cg-prop: 	Property "memory.kmem.tcp.limit_in_bytes"
+cg-prop: Parsing controller "cpuset"
+cg-prop: 	Strategy "replace"
+cg-prop: 	Property "cpuset.cpus"
+cg-prop: 	Property "cpuset.mems"
+cg-prop: 	Property "cpuset.memory_migrate"
+cg-prop: 	Property "cpuset.cpu_exclusive"
+cg-prop: 	Property "cpuset.mem_exclusive"
+cg-prop: 	Property "cpuset.mem_hardwall"
+cg-prop: 	Property "cpuset.memory_spread_page"
+cg-prop: 	Property "cpuset.memory_spread_slab"
+cg-prop: 	Property "cpuset.sched_load_balance"
+cg-prop: 	Property "cpuset.sched_relax_domain_level"
+cg-prop: Parsing controller "blkio"
+cg-prop: 	Strategy "replace"
+cg-prop: 	Property "blkio.weight"
+cg-prop: Parsing controller "freezer"
+cg-prop: 	Strategy "replace"
+cg-prop: Parsing controller "perf_event"
+cg-prop: 	Strategy "replace"
+cg-prop: Parsing controller "net_cls"
+cg-prop: 	Strategy "replace"
+cg-prop: 	Property "net_cls.classid"
+cg-prop: Parsing controller "net_prio"
+cg-prop: 	Strategy "replace"
+cg-prop: 	Property "net_prio.ifpriomap"
+cg-prop: Parsing controller "pids"
+cg-prop: 	Strategy "replace"
+cg-prop: 	Property "pids.max"
+cg-prop: Parsing controller "devices"
+cg-prop: 	Strategy "replace"
+cg-prop: 	Property "devices.list"
+Preparing image inventory (version 1)
+Add pid ns 1 pid 61
+Add net ns 2 pid 61
+Add ipc ns 3 pid 61
+Add uts ns 4 pid 61
+Add time ns 5 pid 61
+Add mnt ns 6 pid 61
+Add user ns 7 pid 61
+Add cgroup ns 8 pid 61
+cg: Dumping cgroups for 61
+cg:  `- New css ID 1
+cg:     `- [] -> [/user.slice/user-1000.slice/user@1000.service/gnome-terminal-server.service] [0]
+cg:     `- [blkio] -> [/] [0]
+cg:     `- [cpu,cpuacct] -> [/] [0]
+cg:     `- [cpuset] -> [/] [0]
+cg:     `- [devices] -> [/user.slice] [0]
+cg:     `- [freezer] -> [/] [0]
+cg:     `- [hugetlb] -> [/] [0]
+cg:     `- [memory] -> [/] [0]
+cg:     `- [name=systemd] -> [/user.slice/user-1000.slice/user@1000.service/gnome-terminal-server.service] [0]
+cg:     `- [name=zdtmtst] -> [/] [0]
+cg:     `- [name=zdtmtst.defaultroot] -> [/] [0]
+cg:     `- [net_cls,net_prio] -> [/] [0]
+cg:     `- [perf_event] -> [/] [0]
+cg:     `- [pids] -> [/user.slice/user-1000.slice/user@1000.service] [0]
+cg:     `- [rdma] -> [/] [0]
+cg: Set 1 is criu one
+Detected cgroup V1 freezer
+Seized task 55, state 1
+seccomp: Collected tid_real 55 mode 0
+Collected (4 attempts, 0 in_progress)
+Seized task 59, state 0
+seccomp: Collected tid_real 59 mode 0
+Collected (4 attempts, 0 in_progress)
+Seized task 60, state 0
+seccomp: Collected tid_real 60 mode 0
+Collected (4 attempts, 0 in_progress)
+Collected (4 attempts, 0 in_progress)
+Collected 60 in 1 state
+Collected (3 attempts, 0 in_progress)
+Collected 59 in 1 state
+Collected (3 attempts, 0 in_progress)
+Collected 55 in 1 state
+Will take pid namespace in the image
+Add pid ns 9 pid 55
+Will take net namespace in the image
+Add net ns 10 pid 55
+Will take ipc namespace in the image
+Add ipc ns 11 pid 55
+Will take uts namespace in the image
+Add uts ns 12 pid 55
+Will take mnt namespace in the image
+Add mnt ns 13 pid 55
+Lock network
+Running network-lock scripts

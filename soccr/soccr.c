@@ -74,9 +74,9 @@ void libsoccr_set_log(unsigned int level, void (*fn)(unsigned int level, const c
 	log = fn;
 }
 
-#define loge(msg, ...) do { if (log && (log_level >= SOCCR_LOG_ERR)) log(SOCCR_LOG_ERR, "Error (%s:%d): " msg, __FILE__, __LINE__, ##__VA_ARGS__); } while (0)
+#define loge(msg, ...) do { if (log && (log_level >= SOCCR_LOG_ERR) && 0) log(SOCCR_LOG_ERR, "Error (%s:%d): " msg, __FILE__, __LINE__, ##__VA_ARGS__); } while (0)
 #define logerr(msg, ...) loge(msg ": %s\n", ##__VA_ARGS__, strerror(errno))
-#define logd(msg, ...) do { if (log && (log_level >= SOCCR_LOG_DBG)) log(SOCCR_LOG_DBG, "Debug: " msg, ##__VA_ARGS__); } while (0)
+#define logd(msg, ...) do { if (log && (log_level >= SOCCR_LOG_DBG) && 0) log(SOCCR_LOG_DBG, "Debug: " msg, ##__VA_ARGS__); } while (0)
 
 static int tcp_repair_on(int fd)
 {

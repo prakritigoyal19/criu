@@ -1005,6 +1005,10 @@ static int recv_fd_from_peer(struct fdinfo_list_entry *fle)
 		else if (ret)
 			return -1;
 
+		/*This message is commented out as
+		it causes a segmentation fault when restore
+		is run while using binary logging*/
+
 		pr_info("Further fle=%p, pid=%d\n", tmp, fle->pid);
 		if (!task_fle(current, tmp)) {
 			pr_err("Unexpected fle %p, pid=%d\n", tmp, vpid(current));

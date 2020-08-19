@@ -8,6 +8,9 @@
 
 //#include <ffi.h>
 
+#include "cr_options.h"
+#include "log.h"
+#include "servicefd.h"
 #include "uapi/flog.h"
 #include "flog_util.h"
 
@@ -75,9 +78,9 @@ static uint64_t mbuf_size = sizeof(_mbuf);
 	return 0;
 }*/
 
-static int flog_enqueue(flog_msg_t *m)
+static int flog_enqueue(int fdout, flog_msg_t *m)
 {
-	if (write(1, m, m->size) != m->size) {
+	if (write(fdout, m, m->size) != m->size) {
 		fprintf(stderr, "Unable to write a message\n");
 		return -1;
 	}
@@ -150,12 +153,30 @@ int flog_close(int fdout)
 	return 0;
 }
 
-int flog_encode_msg(int fdout, unsigned int nargs, unsigned int mask, const char *format, ...)
+int flog_encode_msg(int loglevel, unsigned int nargs, unsigned int mask, const char *format, ...)
 {
 	flog_msg_t *m;
 	va_list argptr;
 	char *str_start, *p;
 	size_t i;
+	int fdout;
+	unsigned int current_loglevel;
+
+	if (!opts.log_in_binary){
+		va_start(argptr, format);
+		vprint_on_level(loglevel, format, argptr);
+		va_end(argptr);
+		return 0;
+	}
+
+	if (unlikely(loglevel == LOG_MSG)) {
+		fdout = STDOUT_FILENO;
+	}else {
+		current_loglevel = log_get_loglevel();
+		if (loglevel > current_loglevel)
+			return 0;
+		fdout = log_get_fd();
+	}
 
 	if (mbuf != _mbuf && flog_map_buf(fdout))
 		return -1;
@@ -183,10 +204,12 @@ int flog_encode_msg(int fdout, unsigned int nargs, unsigned int mask, const char
 		 * a copy (FIXME implement rodata refs).
 		 */
 		if (mask & (1u << i)) {
-			p = memccpy(str_start, (void *)m->args[i], 0, mbuf_size - (str_start - mbuf));
-			if (p == NULL) {
-				fprintf(stderr, "No memory for string argument\n");
-				return -1;
+			if(m->args[i]){
+				p = memccpy(str_start, (void *)m->args[i], 0, mbuf_size - (str_start - mbuf));
+				if (p == NULL) {
+					fprintf(stderr, "No memory for string argument\n");
+					return -1;
+				}
 			}
 			m->args[i] = str_start - mbuf;
 			str_start = p;
@@ -205,7 +228,7 @@ int flog_encode_msg(int fdout, unsigned int nargs, unsigned int mask, const char
 
 	m->size = roundup(m->size, 8);
 	if (mbuf == _mbuf) {
-		if (flog_enqueue(m))
+		if (flog_enqueue(fdout, m))
 			return -1;
 	} else {
 		mbuf += m->size;

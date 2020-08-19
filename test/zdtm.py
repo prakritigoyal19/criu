@@ -897,6 +897,8 @@ class criu_rpc:
             arg = args.pop(0)
             if "-v4" == arg:
                 criu.opts.log_level = 4
+            elif "-b" == arg:
+                criu.opts.log_in_binary = True
             elif "-o" == arg:
                 criu.opts.log_file = args.pop(0)
             elif "-D" == arg:
@@ -1104,7 +1106,7 @@ class criu:
         if not log:
             log = action + ".log"
 
-        s_args = ["-o", log, "-D", self.__ddir(), "-v4"] + opts
+        s_args = ["-o", log, "-D", self.__ddir(), "-v4", "-b"] + opts
 
         with open(os.path.join(self.__ddir(), action + '.cropt'), 'w') as f:
             f.write(' '.join(s_args) + '\n')
@@ -2169,7 +2171,9 @@ def grep_errors(fname):
     first = True
     print_next = False
     before = []
-    with open(fname, errors='replace') as fd:
+    fname1 = "testing_binary.log"
+    subprocess.Popen(['../crit/decoder', fname, fname1])
+    with open(fname1, errors='replace') as fd:
         for line in fd:
             before.append(line)
             if len(before) > 5:

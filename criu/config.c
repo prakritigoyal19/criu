@@ -281,6 +281,7 @@ void init_opts(void)
 	opts.log_level = DEFAULT_LOGLEVEL;
 	opts.pre_dump_mode = PRE_DUMP_SPLICE;
 	opts.file_validation_method = FILE_VALIDATION_DEFAULT;
+	opts.log_in_binary = 0;
 }
 
 bool deprecated_ok(char *what)
@@ -650,7 +651,7 @@ int parse_options(int argc, char **argv, bool *usage_error,
 				opts.log_level++;
 			break;
 		case 'b':
-			opts.log_in_binary = true;
+			opts.log_in_binary = 1;
 			break;
 		case 1043: {
 			int fd;

@@ -125,7 +125,7 @@
 		 const void *:			0,			\
 									\
 		 /* Systypes and pointers */				\
-		 default:			(sizeof(v)==sizeof(void *)) -1)
+		 default:			0)
 
 typedef struct {
 	unsigned int	magic;

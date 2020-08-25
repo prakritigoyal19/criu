@@ -1669,8 +1669,9 @@ static int post_open_interconnected_master(struct unix_sk_info *ui)
 
 static void pr_info_opening(const char *prefix, struct unix_sk_info *ui, struct fdinfo_list_entry *fle)
 {
-	pr_info("Opening %s (stage %d id %#x ino %u peer %u)\n",
-		prefix, fle->stage, ui->ue->id, ui->ue->ino, ui->ue->peer);
+	/*pr_info("Opening %s (stage %d id %#x ino %u peer %u)\n",
+		prefix, fle->stage, ui->ue->id, ui->ue->ino, ui->ue->peer);*/
+	return;
 }
 
 static int open_unixsk_pair_master(struct unix_sk_info *ui, int *new_fd)

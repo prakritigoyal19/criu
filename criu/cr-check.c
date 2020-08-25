@@ -636,7 +636,7 @@ static int parse_special_maps(struct special_mapping *vmas, size_t nr)
 				&start, &end, &tail);
 		if (r != 2) {
 			fclose(maps);
-			pr_err("Bad maps format %d.%d (%s)\n", r, tail, buf + tail);
+			//pr_err("Bad maps format %d.%d (%s)\n", r, tail, buf + tail);
 			return -1;
 		}
 
@@ -881,7 +881,7 @@ static unsigned long get_ring_len(unsigned long addr)
 		r = sscanf(buf, "%lx-%lx %*s %*s %*s %*s %n\n", &start, &end, &tail);
 		if (r != 2) {
 			fclose(maps);
-			pr_err("Bad maps format %d.%d (%s)\n", r, tail, buf + tail);
+			//pr_err("Bad maps format %d.%d (%s)\n", r, tail, buf + tail);
 			return 0;
 		}
 

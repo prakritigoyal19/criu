@@ -46,7 +46,6 @@ int decode_all(int fdin, int fdout)
 			return -1;
 		}
 		if (m->magic != MAGIC) {
-			//fprintf(stderr, "The log file was not properly closed\n");
 			lseek(fdin, -sizeof(ret), SEEK_CUR);
 			read(fdin,b,1);
 			write(fdout, b, 1);
@@ -74,22 +73,30 @@ int decode_all(int fdin, int fdout)
 
 		size  = vsnprintf(buffer + buf_off, sizeof buffer - buf_off, fmt, (void *)values);
 		size += buf_off;
-		ret = write(fdout, buffer, size );
+		ret = write(fdout, buffer, size);
 	}
 	return 0;
 }
 
 int main(int argc, char *argv[]){
 	int fdin, fdout;
+	char c;
 	fdin = open(argv[1], O_RDONLY);
-	if(fdin<0){
+	if (fdin<0){
 		fprintf(stderr, "Unable to open file: %m");
 		return -1;
 	}
 	fdout = open(argv[2], O_CREAT|O_TRUNC|O_WRONLY|O_APPEND);
-	if(fdout<0){
+	if (fdout<0){
 		fprintf(stderr, "Unable to open file: %m");
 		return -1;
 	}
-	return decode_all(fdin, fdout);
+
+	c = fgetc(fdin); 
+    while (c != EOF) 
+    { 
+        fputc(c, fdout); 
+        c = fgetc(fdin); 
+    }
+    return 0;
 }

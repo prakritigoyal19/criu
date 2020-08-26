@@ -5,7 +5,7 @@ CC	= gcc
 CFLAGS  = -g -Wall
 
 decoder:
-	$(Q) $(CC) crit/decoder.c -o crit/decoder
+	$(Q) $(CC) crit/arch/$(ARCH)/decoder.c -o crit/decoder
 .PHONY: decoder
 
 crit/crit: crit/crit-$(PYTHON)

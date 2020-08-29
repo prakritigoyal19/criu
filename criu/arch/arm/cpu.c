@@ -1,5 +1,6 @@
 #undef	LOG_PREFIX
 #define LOG_PREFIX "cpu: "
+#define no_binary_log
 
 #include <errno.h>
 #include "cpu.h"

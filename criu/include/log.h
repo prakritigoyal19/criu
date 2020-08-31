@@ -3,6 +3,10 @@
 
 #include <inttypes.h>
 
+#if (__STDC_VERSION__ < 201112L)
+#define no_binary_log
+#endif
+
 #ifndef CR_NOGLIBC
 
 #include <string.h>

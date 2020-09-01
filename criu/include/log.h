@@ -2,6 +2,7 @@
 #define __CR_LOG_H__
 
 #include <inttypes.h>
+#include "flog.h"
 
 #if (__STDC_VERSION__ < 201112L)
 #undef ARCH_HAS_FLOG
@@ -41,6 +42,54 @@ extern void print_on_level(unsigned int loglevel, const char *format, ...)
 
 void flush_early_log_buffer(int fd);
 
+#ifdef ARCH_HAS_FLOG
+#define print_once(loglevel, fmt, ...)					\
+	do {								\
+		static bool __printed;					\
+		if (!__printed) {					\
+			flog_encode(loglevel, fmt, ##__VA_ARGS__);	\
+			__printed = 1;					\
+		}							\
+	} while (0)
+
+#define pr_msg(fmt, ...)						\
+	flog_encode(LOG_MSG,						\
+		       fmt, ##__VA_ARGS__)
+
+#define pr_info(fmt, ...)						\
+	flog_encode(LOG_INFO,						\
+		       LOG_PREFIX fmt, ##__VA_ARGS__)
+
+#define pr_err(fmt, ...)						\
+	flog_encode(LOG_ERROR,						\
+		       "Error (%s:%d): " LOG_PREFIX fmt,		\
+		       __FILE__, __LINE__, ##__VA_ARGS__)
+
+#define pr_err_once(fmt, ...)						\
+	print_once(LOG_ERROR, fmt, ##__VA_ARGS__)
+
+#define pr_warn(fmt, ...)						\
+	flog_encode(LOG_WARN,						\
+		       "Warn  (%s:%d): " LOG_PREFIX fmt,		\
+		       __FILE__, __LINE__, ##__VA_ARGS__)
+
+#define pr_warn_once(fmt, ...)						\
+       print_once(LOG_WARN,						\
+			"Warn  (%s:%d): " LOG_PREFIX fmt,		\
+			__FILE__, __LINE__, ##__VA_ARGS__)
+
+#define pr_debug(fmt, ...)						\
+	flog_encode(LOG_DEBUG,						\
+		       LOG_PREFIX fmt, ##__VA_ARGS__)
+
+#ifndef CR_NOGLIBC
+
+#define pr_perror(fmt, ...)						\
+	pr_err(fmt ": %s\n", ##__VA_ARGS__, strerror(errno))
+
+#endif /* CR_NOGLIBC */
+
+#else
 #define print_once(loglevel, fmt, ...)					\
 	do {								\
 		static bool __printed;					\
@@ -86,5 +135,7 @@ void flush_early_log_buffer(int fd);
 	pr_err(fmt ": %s\n", ##__VA_ARGS__, strerror(errno))
 
 #endif /* CR_NOGLIBC */
+
+#endif /*ARCH_HAS_FLOG*/
 
 #endif /* __CR_LOG_H__ */

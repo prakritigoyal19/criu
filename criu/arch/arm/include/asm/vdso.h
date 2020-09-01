@@ -9,7 +9,6 @@
  *
  * Poke from kernel file arch/arm/vdso/vdso.lds.S
  */
-#define no_binary_log
 #define VDSO_SYMBOL_MAX		2
 #define VDSO_SYMBOL_GTOD	1
 #define ARCH_VDSO_SYMBOLS			\

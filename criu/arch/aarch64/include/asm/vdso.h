@@ -9,7 +9,6 @@
  * This is a minimal amount of symbols
  * we should support at the moment.
  */
-#define no_binary_log
 #define VDSO_SYMBOL_MAX		4
 #define VDSO_SYMBOL_GTOD	2
 

@@ -6,6 +6,11 @@
 #include <stdint.h>
 #include <fcntl.h>
 
+#if (__STDC_VERSION__ < 201112L)
+#undef ARCH_HAS_FLOG
+#endif
+
+#ifdef ARCH_HAS_FLOG
 typedef struct {
 	unsigned int	magic;
 	unsigned int	size;
@@ -20,8 +25,6 @@ typedef struct {
 #define BUF_SIZE (1<<20)
 static char _mbuf[BUF_SIZE];
 static char *mbuf = _mbuf;
-static char *fbuf;
-static uint64_t fsize;
 static uint64_t mbuf_size = sizeof(_mbuf);
 
 #define LOG_BUF_LEN		(8*1024)
@@ -31,10 +34,10 @@ static char buf_off = 0;
 int decode_all(int fdin, int fdout)
 {
 	flog_msg_t *m = (void *)mbuf;
-	void *values[34], *b;
+	void *values[34];
 	size_t i, ret;
-	char *fmt;
-	int size, n;
+	char *fmt, *b;
+	int size;
 
 	while (1) {
 		ret = read(fdin, mbuf, sizeof(m));
@@ -81,6 +84,23 @@ int decode_all(int fdin, int fdout)
 int main(int argc, char *argv[]){
 	int fdin, fdout;
 	fdin = open(argv[1], O_RDONLY);
+	if(fdin<0){
+		fprintf(stderr, "Unable to open file: %m");
+		return -1;
+	}
+	fdout = open(argv[2], O_CREAT|O_TRUNC|O_WRONLY|O_APPEND);
+	if(fdout<0){
+		fprintf(stderr, "Unable to open file: %m");
+		return -1;
+	}
+	return decode_all(fdin, fdout);
+}
+
+#else
+int main(int argc, char *argv[]){
+	int fdin, fdout;
+	char *c;
+	fdin = open(argv[1], O_RDONLY);
 	if (fdin<0){
 		fprintf(stderr, "Unable to open file: %m");
 		return -1;
@@ -90,5 +110,13 @@ int main(int argc, char *argv[]){
 		fprintf(stderr, "Unable to open file: %m");
 		return -1;
 	}
-	return decode_all(fdin, fdout);
+	read(fdin, c, 1);
+	while (c != EOF)
+	{
+		read(fdin, c, 1);
+		write(fdout, c, 1);
+	}
+	return 0;
 }
+
+#endif /*ARCH_HAS_FLOG*/

@@ -5,7 +5,7 @@
 #include "flog.h"
 
 #if (__STDC_VERSION__ < 201112L)
-#define no_binary_log
+#undef ARCH_HAS_FLOG
 #endif
 
 #ifndef CR_NOGLIBC
@@ -42,7 +42,7 @@ extern void print_on_level(unsigned int loglevel, const char *format, ...)
 
 void flush_early_log_buffer(int fd);
 
-#ifndef no_binary_log
+#ifdef ARCH_HAS_FLOG
 #define print_once(loglevel, fmt, ...)					\
 	do {								\
 		static bool __printed;					\
@@ -136,6 +136,6 @@ void flush_early_log_buffer(int fd);
 
 #endif /* CR_NOGLIBC */
 
-#endif /*no_binary_log*/
+#endif /*ARCH_HAS_FLOG*/
 
 #endif /* __CR_LOG_H__ */

@@ -3,6 +3,10 @@
 
 #include <inttypes.h>
 
+#if (__STDC_VERSION__ < 201112L)
+#undef ARCH_HAS_FLOG
+#endif
+
 #ifndef CR_NOGLIBC
 
 #include <string.h>

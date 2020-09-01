@@ -68,16 +68,16 @@ endif
 
 ifeq ($(ARCH),ppc64)
         LDARCH		:= powerpc:common64
-        DEFINES		:= -DCONFIG_PPC64 -D__SANE_USERSPACE_TYPES__
+        DEFINES		:= -DCONFIG_PPC64 -D__SANE_USERSPACE_TYPES__ -DARCH_HAS_FLOG
 endif
 
 ifeq ($(ARCH),x86)
         LDARCH		:= i386:x86-64
-        DEFINES		:= -DCONFIG_X86_64
+        DEFINES		:= -DCONFIG_X86_64 -DARCH_HAS_FLOG
 endif
 
 ifeq ($(ARCH),mips)
-        DEFINES		:= -DCONFIG_MIPS 
+        DEFINES		:= -DCONFIG_MIPS -DARCH_HAS_FLOG
 endif
 
 #
@@ -88,7 +88,7 @@ endif
 # commit "S/390: Fix 64 bit sibcall".
 ifeq ($(ARCH),s390)
         ARCH		:= s390
-        DEFINES		:= -DCONFIG_S390
+        DEFINES		:= -DCONFIG_S390 -DARCH_HAS_FLOG
         CFLAGS_PIE	:= -fno-optimize-sibling-calls
 endif
 

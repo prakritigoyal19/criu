@@ -127,6 +127,10 @@ int main(int argc, char *argv[], char *envp[])
 	if (check_options())
 		return 1;
 
+	if(opts.log_in_binary)
+		if(!opts.file_logging)
+			pr_warn("Using -b without logging in binary file is futile\n");
+
 	if (opts.imgs_dir == NULL)
 		SET_CHAR_OPTS(imgs_dir, ".");
 
